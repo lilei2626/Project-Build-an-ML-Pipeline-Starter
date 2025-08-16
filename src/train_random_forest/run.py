@@ -230,13 +230,10 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # 2 - a step called "random_forest" with the random forest instance that we just saved in the `random_forest` variable.
     # HINT: Use the explicit Pipeline constructor so you can assign the names to the steps, do not use make_pipeline
 
-    sk_pipe = Pipeline(
-        steps =[
-        # YOUR CODE HERE
-            ("preprocessor", preprocessor),
-            ("random_forest", random_forest),
-        ]
-    )
+    sk_pipe = Pipeline(steps=[
+        ("preprocessor", preprocessor),
+        ("random_forest", random_forest),
+    ])
 
     return sk_pipe, processed_features
     ######################################
