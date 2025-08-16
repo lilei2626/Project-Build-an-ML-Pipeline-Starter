@@ -90,7 +90,7 @@ def go(args):
 
     # Compute r2 and MAE
     logger.info("Scoring")
-    r_squared = sk_pipe.score(X_val, y_val)
+    
 
     y_pred = sk_pipe.predict(X_val)
     r_squared = r2_score(y_val, y_pred)
