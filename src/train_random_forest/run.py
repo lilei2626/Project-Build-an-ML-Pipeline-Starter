@@ -99,6 +99,9 @@ def go(args):
     logger.info(f"Score: {r_squared}")
     logger.info(f"MAE: {mae}")
 
+    run.summary["r2"]  = r_squared
+    run.summary["mae"] = mae
+
     logger.info("Exporting model")
 
     # Save model package in the MLFlow sklearn format
