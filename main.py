@@ -54,6 +54,20 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
+
+            _ = mlflow.run(
+                "src/basic_cleaning",
+                entry_point="main",
+                env_manager="conda",
+                parameters={
+                    "input_artifact": "sample.csv:latest",
+                    "output_artifact": "clean_sample.csv",
+                    "output_type": "clean_sample",
+                    "output_description": "Cleaned dataset with price filters applied",
+                    "min_price": config["etl"]["min_price"],
+                    "max_price": config["etl"]["max_price"],
+                },
+            )
             pass
 
         if "data_check" in active_steps:
@@ -131,8 +145,10 @@ def go(config: DictConfig):
             # Implement here #
             ##################
             _ = mlflow.run(
-                os.path.join(here, "components", "test_regression_model"),
-                "main",
+                f"{config['main']['components_repository']}/test_regression_model",
+                entry_point="main",
+                version="main",
+                env_manager="conda",
                 parameters={
                     "mlflow_model": "random_forest_export:prod",
                     "test_artifact": "test_data.csv:latest",
