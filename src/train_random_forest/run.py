@@ -170,7 +170,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     non_ordinal_categorical_preproc = make_pipeline(
         # YOUR CODE HERE
         SimpleImputer(strategy="most_frequent"),
-        OneHotEncoder(handle_unknown="ignore")
+        OneHotEncoder()
     )
     ######################################
 
