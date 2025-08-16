@@ -60,20 +60,18 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
-
-            if "data_check" in active_steps:
-                _ = mlflow.run(
-                  "src/data_check",
-                    entry_point="main",
-                    env_manager="conda",
-                    parameters={
-                        "csv": "clean_sample.csv:latest",
-                        "ref": "clean_sample.csv:reference",
-                        "kl_threshold": config["data_check"]["kl_threshold"],
-                        "min_price": config["data_check"]["min_price"],
-                        "max_price": config["data_check"]["max_price"],
-                    },
-                )
+            _ = mlflow.run(
+                "src/data_check",
+                 entry_point="main",
+                 env_manager="conda",
+                  parameters={
+                    "csv": "clean_sample.csv:latest",
+                      "ref": "clean_sample.csv:reference",
+                      "kl_threshold": config["data_check"]["kl_threshold"],
+                      "min_price": config["data_check"]["min_price"],
+                      "max_price": config["data_check"]["max_price"],
+                 },
+            )
             pass
 
         if "data_split" in active_steps:
@@ -110,18 +108,18 @@ def go(config: DictConfig):
             # Implement here #
             ##################
 
-                _ = mlflow.run(
-                    "src/train_random_forest",
-                    entry_point="main",
-                    env_manager="conda",
-                    parameters={
-                        "trainval_artifact":   "trainval_data.csv:latest",
-                        "val_size":            config["modeling"]["val_size"],
-                        "random_seed":         config["modeling"]["random_seed"],
-                        "stratify_by":         config["modeling"]["stratify_by"],
-                        "rf_config":           rf_config,  # <- the JSON written earlier
-                        "max_tfidf_features":  config["modeling"]["max_tfidf_features"],
-                        "output_artifact":     "random_forest_export",
+            _ = mlflow.run(
+                 "src/train_random_forest",
+                 entry_point="main",
+                 env_manager="conda",
+                 parameters={
+                      "trainval_artifact":   "trainval_data.csv:latest",
+                      "val_size":            config["modeling"]["val_size"],
+                      "random_seed":         config["modeling"]["random_seed"],
+                      "stratify_by":         config["modeling"]["stratify_by"],
+                      "rf_config":           rf_config,  # <- the JSON written earlier
+                      "max_tfidf_features":  config["modeling"]["max_tfidf_features"],
+                      "output_artifact":     "random_forest_export",
                 },
             )
 
@@ -132,6 +130,14 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
+            _ = mlflow.run(
+                os.path.join(here, "components", "test_regression_model"),
+                "main",
+                parameters={
+                    "mlflow_model": "random_forest_export:prod",
+                    "test_artifact": "test_data.csv:latest",
+                },
+            )
 
             pass
 
