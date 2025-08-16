@@ -134,7 +134,7 @@ def go(args):
           "feature_importance": wandb.Image(fig_feat_imp),
         }
     )
-
+run.finish()
 
 def plot_feature_importance(pipe, feat_names):
     # We collect the feature importance for all non-nlp features first
@@ -170,7 +170,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     non_ordinal_categorical_preproc = make_pipeline(
         # YOUR CODE HERE
         SimpleImputer(strategy="most_frequent"),
-        OneHotEncoder()
+        OneHotEncoder(handle_unknown="ignore")
     )
     ######################################
 
