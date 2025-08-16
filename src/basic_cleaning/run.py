@@ -53,15 +53,15 @@ if __name__ == "__main__":
   
     parser.add_argument(
         "--input_artifact", 
-        type=str,
-        help="The input artifact to download",
+        type = str,
+        help = "The input artifact to download",
         required = True
     )
 
     parser.add_argument(
         "--output_artifact", 
-        type=str,
-        help="The name for the output artifact",
+        type = str,
+        help = "The name for the output artifact",
         required = True
     )
 
