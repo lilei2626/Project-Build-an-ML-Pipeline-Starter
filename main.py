@@ -80,6 +80,26 @@ def go(config: DictConfig):
             ##################
             # Implement here #
             ##################
+
+            if "data_split" in active_steps:
+                _ = mlflow.run(
+                    f"{config['main']['components_repository']}/train_val_test_split",
+                    entry_point="main",
+                    version="main",
+                    env_manager="conda",
+                    parameters={
+                        # input is the cleaned data produced by the previous step
+                        "input": "clean_sample.csv:latest",
+            
+                        # the rest come from config.yaml → modeling section
+                        "test_size":   config["modeling"]["test_size"],
+                        "random_seed": config["modeling"]["random_seed"],
+                        "stratify_by": config["modeling"]["stratify_by"],
+            
+                        # If your component expects a validation split as well, keep this:
+                        # "val_size": config["modeling"].get("val_size", 0.2),
+                    },
+                )
             pass
 
         if "train_random_forest" in active_steps:
