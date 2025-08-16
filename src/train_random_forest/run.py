@@ -101,6 +101,7 @@ def go(args):
 
     run.summary["r2"]  = r_squared
     run.summary["mae"] = mae
+    run.finish()
 
     logger.info("Exporting model")
 
