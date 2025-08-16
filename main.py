@@ -96,8 +96,6 @@ def go(config: DictConfig):
                         "random_seed": config["modeling"]["random_seed"],
                         "stratify_by": config["modeling"]["stratify_by"],
             
-                        # If your component expects a validation split as well, keep this:
-                        # "val_size": config["modeling"].get("val_size", 0.2),
                     },
                 )
             pass
