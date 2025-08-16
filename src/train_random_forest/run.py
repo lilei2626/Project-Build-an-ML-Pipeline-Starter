@@ -40,8 +40,14 @@ logger = logging.getLogger()
 
 def go(args):
 
-    run = wandb.init(job_type="train_random_forest")
-    run.config.update(args)
+    #run = wandb.init(job_type="train_random_forest")
+    #run.config.update(args)
+
+    run = wandb.init(
+        project="nyc_airbnb",
+        entity="lilei2626-western-governors-university",
+        job_type="train_random_forest"
+    )
 
     # Get the Random Forest configuration and update W&B
     with open(args.rf_config) as fp:
