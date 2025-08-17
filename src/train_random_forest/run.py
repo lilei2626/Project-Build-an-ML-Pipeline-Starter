@@ -238,7 +238,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # HINT: Use the explicit Pipeline constructor so you can assign the names to the steps, do not use make_pipeline
     sk_pipe = Pipeline(steps=[
             ("preprocessor", preprocessor),
-            ("random_Forest", random_Forest),
+            ("random_forest", random_Forest),
         ]
     )
 
