@@ -6,7 +6,7 @@ import os
 import wandb
 import hydra
 from omegaconf import DictConfig
-
+from hydra import utils as hydra_utils
 _steps = [
     "download",
     "basic_cleaning",
@@ -50,13 +50,15 @@ def go(config: DictConfig):
                 },
             )
 
+        project_root = hydra_utils.get_original_cwd()
+
         if "basic_cleaning" in active_steps:
             ##################
             # Implement here #
             ##################
 
             _ = mlflow.run(
-                "src/basic_cleaning",
+                os.path.join(project_root, "src", "basic_cleaning"),
                 entry_point="main",
                 env_manager="conda",
                 parameters={
@@ -75,16 +77,17 @@ def go(config: DictConfig):
             # Implement here #
             ##################
             _ = mlflow.run(
-                "src/data_check",
-                 entry_point="main",
-                 env_manager="conda",
-                  parameters={
+                os.path.join(project_root, "src", "data_check"),
+                entry_point="main",
+                env_manager="conda",
+                parameters={
                     "csv": "clean_sample.csv:latest",
-                      "ref": "clean_sample.csv:reference",
-                      "kl_threshold": config["data_check"]["kl_threshold"],
-                      "min_price": config["etl"]["min_price"],
-                      "max_price": config["etl"]["max_price"],
-                 },
+                    "ref": "clean_sample.csv:reference",
+                    "kl_threshold": config["data_check"]["kl_threshold"],
+                    # If you do NOT have these in config["data_check"], pull from etl
+                    "min_price": config["etl"]["min_price"],
+                    "max_price": config["etl"]["max_price"],
+                },
             )
             pass
 
@@ -123,17 +126,17 @@ def go(config: DictConfig):
             ##################
 
             _ = mlflow.run(
-                 "src/train_random_forest",
-                 entry_point="main",
-                 env_manager="conda",
-                 parameters={
-                      "trainval_artifact":   "trainval_data.csv:latest",
-                      "val_size":            config["modeling"]["val_size"],
-                      "random_seed":         config["modeling"]["random_seed"],
-                      "stratify_by":         config["modeling"]["stratify_by"],
-                      "rf_config":           rf_config,  # <- the JSON written earlier
-                      "max_tfidf_features":  config["modeling"]["max_tfidf_features"],
-                      "output_artifact":     "random_forest_export",
+                os.path.join(project_root, "src", "train_random_forest"),
+                entry_point="main",
+                env_manager="conda",
+                parameters={
+                    "trainval_artifact": "trainval_data.csv:latest",
+                    "val_size":           config["modeling"]["val_size"],
+                    "random_seed":        config["modeling"]["random_seed"],
+                    "stratify_by":        config["modeling"]["stratify_by"],
+                    "rf_config":          rf_config,
+                    "max_tfidf_features": config["modeling"]["max_tfidf_features"],
+                    "output_artifact":    "random_forest_export",
                 },
             )
 
