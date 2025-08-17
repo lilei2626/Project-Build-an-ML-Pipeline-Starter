@@ -40,8 +40,8 @@ logger = logging.getLogger()
 
 def go(args):
 
-    #run = wandb.init(job_type="train_random_forest")
-    #run.config.update(args)
+    run = wandb.init(job_type="train_random_forest")
+    run.config.update(args)
     run = wandb.init(
         project="nyc_airbnb",
         entity="lilei2626-western-governors-university",
@@ -90,6 +90,7 @@ def go(args):
 
     # Compute r2 and MAE
     logger.info("Scoring")
+    r_squared = sk_pipe.score(X_val, y_val)
     
 
     y_pred = sk_pipe.predict(X_val)
