@@ -229,7 +229,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     processed_features = ordinal_categorical + non_ordinal_categorical + zero_imputed + ["last_review", "name"]
 
     # Create random forest
-    random_Forest = RandomForestRegressor(**rf_config)
+    random_forest = RandomForestRegressor(**rf_config)
 
     ######################################
     # Create the inference pipeline. The pipeline must have 2 steps: a step called "preprocessor" applying the
@@ -238,11 +238,11 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # HINT: Use the explicit Pipeline constructor so you can assign the names to the steps, do not use make_pipeline
     sk_pipe = Pipeline(steps=[
             ("preprocessor", preprocessor),
-            ("random_forest", random_Forest),
+            ("random_forest", random_forest),
         ]
     )
 
-    return sk_pipe
+    return sk_pipe, processed_features
 
 
 if __name__ == "__main__":
